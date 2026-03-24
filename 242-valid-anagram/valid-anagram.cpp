@@ -4,19 +4,20 @@ public:
         if(s.size() != t.size()){
             return false;
         }
-        unordered_map<char,int> s_mp;
-        unordered_map<char,int> t_mp;
+        unordered_map<char,int> mp;
         for(int i = 0; i<s.size(); i++){
-            s_mp[s[i]]++;
-            t_mp[t[i]]++;
+            mp[s[i]]++;
         }
-
-        for(int i = 0; i<s.size(); i++){
-            if(s_mp[s[i]] != t_mp[s[i]]){
+        for(int i = 0; i<t.size(); i++){
+            if(mp.find(t[i]) != mp.end()){
+                if(mp[t[i]] <= 0){
+                    return false;
+                }
+                mp[t[i]]--;
+            }else{
                 return false;
             }
         }
-
         return true;
     }
 };
