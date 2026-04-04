@@ -1,25 +1,27 @@
 class Solution {
 public:
-    int solve(int n,int t,vector<int> &nums,vector<vector<int>> &dp){
-        if(n == 0 && t == 0){
+    int solve(vector<int>& nums, int target,int n,vector<vector<int>> &dp){
+        if(n == 0 && target == 0){
             return 1;
         }
         else if(n == 0){
             return 0;
         }
-        if(t < -1000 || t > 1000) return 0;
-        if(dp[n][t+1000] != -1){
-            return dp[n][t+1000];
+        if(target+1000>2000 || target+1000<0){
+            return 0;
         }
-        int a = solve(n-1,t-nums[n-1],nums,dp);
-        int b = solve(n-1,t+nums[n-1],nums,dp);
-        // if(a+b == 0){
-        //     return 0;
-        // }
-        return dp[n][t+1000] = a+b;
+        if(dp[n][target+1000] != -1){
+            return dp[n][target+1000];
+        } 
+        int a = solve(nums,target-nums[n-1],n-1,dp);
+        int b = solve(nums,target+nums[n-1],n-1,dp);
+
+        return dp[n][target+1000] = a+b;
     }
     int findTargetSumWays(vector<int>& nums, int target) {
-        vector<vector<int>> dp(nums.size()+1,vector<int>(2001,-1));
-        return solve(nums.size(),target,nums,dp);
+        int n = nums.size();
+        vector<vector<int>> dp(n+1,vector<int> (2001,-1));
+        int ans = solve(nums,target,n,dp);
+        return ans;
     }
 };
