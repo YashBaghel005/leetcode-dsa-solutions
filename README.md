@@ -8,7 +8,7 @@ I use this repository to track my problem-solving journey, improve algorithmic t
 ## 📌 About
 
 * Platform: **LeetCode**
-* Language Used: **Python / C++ / Java** *(update based on what you use)*
+* Language Used: **C++**
 * Focus: **Data Structures, Algorithms, and Problem Solving**
 * Repository maintained using **LeetSync** for automatic updates.
 
