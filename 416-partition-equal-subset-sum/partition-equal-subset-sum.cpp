@@ -1,31 +1,38 @@
 class Solution {
 public:
-    bool solve(vector<int> nums, int idx, int sum,int target,vector<vector<int>> &dp){
+    bool solve(vector<int>& nums,int target,int idx,vector<vector<int>> &dp){
         if(idx >= nums.size()){
+            if(target == 0){
+                return true;
+            }
             return false;
-        }
-        if(sum == target){
-            return true;
-        }else if(sum >= target){
+        }if(target < 0){
             return false;
-        }
-        if(dp[idx][sum] != -1){
-            return dp[idx][sum];
         }
 
-        bool ans = solve(nums,idx+1,sum+nums[idx],target,dp)||solve(nums,idx+1,sum,target,dp);
-        return dp[idx][sum] = ans;
+        if(dp[idx][target] != -1){
+            return dp[idx][target];
+        }
+
+        bool ans = solve(nums,target-nums[idx],idx+1,dp) || solve(nums,target,idx+1,dp);
+        return dp[idx][target] = ans;
     }
     bool canPartition(vector<int>& nums) {
+        // sum calc
+        // subset -> s -> sum/2
+        /*
+            include ya nahi include karo 
+        */
         int sum = 0;
-        for(int x:nums){
-            sum+=x;
+        for(int i = 0; i<nums.size(); i++){
+            sum+=nums[i];
         }
-        if(sum % 2 != 0){
+        if(sum%2 != 0){
             return false;
         }
         int target = sum/2;
-        vector<vector<int>> dp(nums.size()+1,vector<int>(sum+1,-1));
-        return solve(nums,0,0,target,dp);
+        vector<vector<int>> dp(nums.size()+1,vector<int>(target+1,-1));
+        bool ans = solve(nums,target,0,dp);
+        return ans;
     }
 };
