@@ -1,22 +1,40 @@
 class Solution {
 public:
-    unordered_map<string,bool> mp;
-    bool solve(string s, vector<string>& wordDict,string t){
-        if(s == t){
-            return true;
-        }if(s.size() < t.size()){
+    bool pre_match(string &target,string &str){
+        if(target.size() < str.size()){
             return false;
         }
-        if (mp.count(t)) return mp[t];
-        bool ans = false;
-        for(int i = 0; i<wordDict.size(); i++){
-            string next = t+wordDict[i];
-            if(s.substr(0,next.size()) != next) continue;
-            ans = ans || solve(s,wordDict,t+wordDict[i]);
+        for(int i = 0; i<str.size(); i++){
+            if(str[i] != target[i]){
+                return false;
+            }
         }
-        return mp[t] = ans;
+        return true;
+    }
+    bool solve(string target,vector<string>& wordDict,string str,unordered_map<string,bool> &dp){
+        if(str.size() > target.size()){
+            return false;
+        }
+        if(str == target){
+            return true;
+        }
+
+        if(dp.find(str) != dp.end()){
+            return dp[str];
+        }
+
+        bool ans = false;
+        for(int i = 0;i<wordDict.size(); i++){
+            if(pre_match(target,str))
+                ans = ans || solve(target,wordDict,str+wordDict[i],dp);
+            if(ans){
+                return true;
+            }
+        }
+        return dp[str] = ans;
     }
     bool wordBreak(string s, vector<string>& wordDict) {
-        return solve(s,wordDict,"");
+        unordered_map<string,bool> dp;
+        return solve(s,wordDict,"",dp);
     }
 };
